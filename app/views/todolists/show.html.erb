@@ -7,3 +7,4 @@
   <%= image_tag @list.image, size: '300x300' %>
 <% end %>
 <%= link_to "編集", edit_todolist_path(@list.id) %>
+<%= link_to '削除', destroy_todolist_path(@list.id), data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？' } %>
