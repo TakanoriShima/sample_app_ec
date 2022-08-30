@@ -6,11 +6,15 @@ class TodolistsController < ApplicationController
     # ---- ここからコードを書きましょう ---- #
   def create
     # １. データを新規登録するためのインスタンス作成
-    list = List.new(list_params)
+    @list = List.new(list_params)
     # ２. データをデータベースに保存するためのsaveメソッド実行
-    list.save
-    # ３．詳細画面へリダイレクト
-    redirect_to todolist_path(list.id)
+    if @list.save
+      # ３．詳細画面へリダイレクト
+      redirect_to todolist_path(@list.id)
+    else
+      # ４．新規投稿画面を再表示
+      render :new, status: :unprocessable_entity
+    end
   end
   
   def index
@@ -28,9 +32,12 @@ class TodolistsController < ApplicationController
   def update
 
     # ---- ここからコードを書きましょう ---- #
-    list = List.find(params[:id])
-    list.update(list_params)
-    redirect_to todolist_path(list.id)
+    @list = List.find(params[:id])
+    if @list.update(list_params)
+      redirect_to todolist_path(@list.id)
+    else
+      render :edit, status: :unprocessable_entity
+    end  
     # ---- ここまでのあいだにコードを書きましょう ---- #
 
   end
